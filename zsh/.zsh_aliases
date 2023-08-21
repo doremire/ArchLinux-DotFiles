@@ -1,0 +1,41 @@
+# 連想配列でエイリアスを定義
+alias_arr=(
+    cat='bat'
+    gs='git status'
+    grep='grep --color=auto'
+
+    c="clear"
+    cl="clear"
+    ckear="clear"
+    clr="clear"
+
+    ..="cd .."
+    ...="cd ../.."
+    ....="cd ../../.."
+
+    :wq='echo "ここはvimじゃないよ"'
+    :qw='echo "お疲れですか?^^"'
+    :w='echo "エラー:コマンドが無効です"'
+    :q='echo "寝たほうがいいんじゃない？"'
+    :so='echo "vimじゃないけどソースを読み込みます" && source'
+    so='source'
+
+
+)
+
+# 連想配列aliasesの中身をループしてエイリアスを追加
+for alias_def in "${alias_arr[@]}"; do
+    alias "${alias_def}"
+done
+
+if type "exa" > /dev/null 2>&1; then
+   alias ll='exa --icons -al'
+   alias ls='exa --icons'
+else
+   alias ls='ls --color=auto'
+   alias ll='ls --color=auto -alF'
+fi
+
+if type "bat" > /dev/null 2>&1; then
+    alias cat="bat"
+fi

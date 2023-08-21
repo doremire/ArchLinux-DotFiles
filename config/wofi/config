@@ -1,0 +1,5 @@
+mode=drun
+allow_images=true
+image_size=23
+prompt=検索...
+#width=300

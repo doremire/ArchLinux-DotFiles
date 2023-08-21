@@ -1,0 +1,386 @@
+#!/bin/bash -eu
+INSTLOG="install.log"
+#-- パッケージ -----------------------------------------
+dm_packages=(
+    sddm # モダンなディスプレイマネージャ
+    sddm-theme-corners-git
+    # │
+    # ├─ sddm
+    # ├─ qt5-graphicaleffects
+    # ├─ qt5-svg
+    # ├─ qt5-quickcontrols2
+    # └─ git              # バージョン管理システム
+)
+input_tools=(
+    fcitx5-im # 入力メソッドフレームワーク
+    # │
+    # ├─ fcitx5
+    # ├─ fcitx5-configtool
+    # ├─ fcitx5-gtk
+    # └─ fcitx5-qt
+    fcitx5-mozc # Mozcに基づく日本語入力メソッド
+)
+themes=(
+    dracula-icons-git
+    dracula-gtk-theme
+)
+font_resources=(
+    otf-font-awesome # アイコンフォント
+    ttf-symbola      # Unicodeの記号と文字のフォント
+    ttf-twemoji      # TwitterのEmoji用フォント
+    noto-fonts-cjk   # GoogleのNoto CJKフォント
+    ttf-nerd-fonts-symbols
+    ttf-jetbrains-mono-nerd
+    ttf-hack-nerd
+    ttf-firacode-nerd # モノスペースのコーディング用フォント
+)
+dev_environments=(
+    visual-studio-code-bin # 人気のあるコードエディタ
+    github-cli             # GitHubのCLIツール
+    neovim                 # 高機能なテキストエディタ
+    gedit
+    discord
+    zoom
+    slack-desktop
+)
+module_utils=(
+    polkit-gnome           # GNOMEのためのPolkit認証ダイアログ
+    wl-clipboard           # Waylandのクリップボードユーティリティ
+    cliphist               # 不明
+    pacman-contrib         # pacmanの追加ユーティリティ
+    pavucontrol            # PulseAudioボリュームコントロール
+    brightnessctl          # 明るさの調整ユーティリティ
+    bluez                  # LinuxのBluetoothスタック
+    bluez-utils            # Bluetoothユーティリティ
+    blueman                # Bluetoothマネージャ
+    network-manager-applet # ネットワークマネージャのアプレット
+    thunar-archive-plugin  # Thunarのアーカイブプラグイン
+    pipewire
+    wireplumber
+)
+core_apps=(
+    hyprland        # WM
+    firefox-i18n-ja # 人気のウェブブラウザ
+    thunar          # 軽量ファイルマネージャ
+    wezterm         # ターミナルエミュレータ
+)
+wayland_apps=(
+    wl-clipboard                # Waylandのクリップボードユーティリティ
+    grim                        # Waylandのスクリーンショットユーティリティ
+    slurp                       # Waylandの領域選択ユーティリティ
+    wofi                        # Waylandのランチャー
+    wlogout                     # Waylandのログアウトユーティリティ
+    xdg-desktop-portal-hyprland # 不明
+    mako                        # Wayland通知デーモン
+    waybar                      # Wayland用のステータスバー
+    swaybg                      # 壁紙
+    swaylock-effects            # swayのロックスクリーン
+)
+unixporn=(
+    neofetch     # システム情報を表示するユーティリティ
+    starship     # カスタマイズ可能なシェルプロンプト
+    btop         # リソースモニタ
+    lxappearance # GTKテーマのカスタマイズツール
+    nwg-look-bin # 同じ
+    bat          #catの高機能版
+    exa          #lsの高機能版
+)
+# 新しい `packages` 配列の作成
+packages=(
+    "${dm_packages[@]}"
+    "${input_tools[@]}"
+    "${themes[@]}"
+    "${font_resources[@]}"
+    "${dev_environments[@]}"
+    "${module_utils[@]}"
+    "${core_apps[@]}"
+    "${wayland_apps[@]}"
+    "${unixporn[@]}"
+)
+#-- 関数 -----------------------------------------
+install_software() {
+    echo -en "\e[90mInstalling\e[0m \e[97m$1\e[0m..."
+    yay -S --noconfirm $1 &>>$INSTLOG &
+    show_progress $!
+}
+installed() {
+    echo -en "Installed package \e[97m$1\e[0m."
+}
+#-- 表示 -----------------------------------------
+clear
+echo -e "\033[1;34m"
+cat <<"EOF"
+
+
+
+
+
+                                  ▄
+                                 ▄█▄                
+                                ▄███▄
+                               ▄█████▄                          ██████   ██████  ████████ ███████ ██ ██      ███████ ███████ 
+                              ▄███████▄                         ██   ██ ██    ██    ██    ██      ██ ██      ██      ██      
+                             ▄ ▀▀██████▄                        ██   ██ ██    ██    ██    █████   ██ ██      █████   ███████     
+                            ▄██▄▄ ▀█████▄                       ██   ██ ██    ██    ██    ██      ██ ██      ██           ██        
+                           ▄█████████████▄                      ██████   ██████     ██    ██      ██ ███████ ███████ ███████        
+                          ▄███████████████▄                                   
+                         ▄█████████████████▄                           
+                        ▄███████████████████▄                   ┌───────────────────────────────────────────────────────────┐
+                       ▄█████████▀▀▀▀████████▄                  │                                                           │ 
+                      ▄████████▀      ▀███████▄                 │  • "Welcome to the Arch Linux DotFiles Setup Script!"     │
+                     ▄█████████        ████▀▀██▄                │                                                           │
+                    ▄██████████        █████▄▄▄                 │  • Created with ♥  by doremire                            │
+                   ▄██████████▀        ▀█████████▄              │  • Find me at [My GitHub/Twitter/Website]                 │
+                  ▄██████▀▀▀              ▀▀██████▄             │    for more awesomeness.                                  │
+                 ▄███▀▀                       ▀▀███▄            └───────────────────────────────────────────────────────────┘
+                ▄▀▀                               ▀▀▄
+
+
+
+
+               ┌────────────────────────┐  ┌────────────────────────┐  ┌────────────────────────┐  ┌────────────────────────┐
+               │                        │  │                        │  │                        │  │                        │
+               │                        │  │                        │  │                        │  │                        │
+               │          [>_]          │  │           </>          │  │          [UwU]         │  │           [+]          │
+               │                        │  │                        │  │                        │  │                        │
+               │                        │  │                        │  │                        │  │                        │
+               └────────────────────────┘  └────────────────────────┘  └────────────────────────┘  └────────────────────────┘
+
+                           zsh                       coding                uwu kawaii desktop           add to your system                  
+                           
+
+
+
+
+EOF
+echo -e "\033[0m"
+echo "┌──────────────────────────────────────┐"
+echo "│   Start Setup? (y/n)                 │"
+echo "└──────────────────────────────────────┘"
+read -n1 -rep $'\e[97m: : \e[32m1) \e[0my\e[32m 2) \e[0mn\e[32m \e[0m ' INST
+if [[ $INST == "y" || $INST == "Y" ]]; then
+    echo -e "\nStarting setup..."
+else
+    echo -e "\nSetup cancelled."
+    exit 0
+fi
+#-- チェックステップ -----------------------------------------
+current_step=1
+total_steps=8 # Adjust this number based on the total number of checks you plan to perform
+perform_check() {
+    local message="$1"
+    local cmd="$2"
+    local success_msg="$3"
+    local failure_msg="$4"
+    local exit_on_fail=${5:-false}
+    # Generate a random delay time between 1 and 3 seconds.
+    local delay_time=$((RANDOM % 3 + 1))
+    # Display step number
+    echo -n "($current_step/$total_steps) $message"
+    (
+        sleep $delay_time
+        eval "$cmd"
+    ) &
+    local pid=$!
+    while ps | grep -Ew $pid &>/dev/null; do
+        echo -n "."
+        sleep 1
+    done
+    wait $pid
+    if [ $? -eq 0 ]; then
+        echo -en "\r\e[K"
+        echo -e "$success_msg"
+    else
+        echo -en "\r\e[K"
+        echo -e "$failure_msg"
+        [ "$exit_on_fail" = true ] && exit 1
+    fi
+    # Increment the step count for the next check
+    ((current_step++))
+}
+echo -e "Check step in progress:"
+perform_check "Checking your system" \
+    "grep -q 'Arch Linux' /etc/os-release" \
+    "  - Check System is Arch Linux" \
+    "  - Error System is not Arch Linux" \
+    true
+perform_check "Checking network connection" \
+    "ping -c 1 8.8.8.8 &>/dev/null" \
+    "  - Check Internet connection is available" \
+    "  - Error No internet connection" \
+    true
+perform_check "Checking if git is installed" \
+    "command -v git &>/dev/null" \
+    "  - Check Git is installed" \
+    "  - Error Git is not installed" \
+    true
+perform_check "Checking for VM environment" \
+    "! grep -i -e 'VMware' -e 'VirtualBox' -e 'KVM' -e 'Hyper-V' /proc/cpuinfo &>/dev/null" \
+    "  - Check This system is not running inside a VM" \
+    "  - Error This script is not supported inside a VM." \
+    true
+perform_check "Checking for NVIDIA usage" \
+    "! lspci 2>/dev/null | grep -i 'NVIDIA' &>/dev/null" \
+    "  - Check NVIDIA GPU not detected" \
+    "  - Error NVIDIA hardware is not supported." \
+    true
+perform_check "Checking system language" \
+    "[[ $LANG == ja_JP.* ]]" \
+    "  - Check System language is set to Japanese" \
+    "  - Error System language is not set to Japanese"
+false
+perform_check "Checking keyboard layout" \
+    "[[ \$(localectl status | grep 'X11 Layout' | awk '{print \$3}') == 'jp' && \$(localectl status | grep 'X11 Model' | awk '{print \$3}') == 'jp106' ]]" \
+    "  - Check Keyboard layout is set to Japanese (JP106)" \
+    "  - Error Keyboard layout is not set to Japanese (JP106)"
+false
+
+git clone https://aur.archlinux.org/yay.git &>>$INSTLOG
+cd yay
+makepkg -si --noconfirm &>>../$INSTLOG &
+show_progress $!
+cd ..
+rm -rf yay
+
+sleep 2
+echo -e "[\e[32m   OK   \e[0m] All checks completed"
+echo -e "Installing main components. This may take a while...\n\n\n\n\n\n\n\n\n\n\n\n"
+#-- インストールステップ -----------------------------------------
+package_count=${#packages[@]}
+current_package=0
+DISPLAY_LINES=10
+CURSOR_MOVE=$((DISPLAY_LINES + 1))
+# Display the header
+display_header() {
+    echo -e "\e[K:: Installing package ($current_package/$package_count)"
+}
+# Print the last DISPLAY_LINES actions
+display_actions() {
+    local start_index=$((current_package - DISPLAY_LINES))
+    if [ $start_index -lt 0 ]; then
+        start_index=0
+    fi
+    for ((i = 0; i < DISPLAY_LINES; i++)); do
+        echo -en "\e[K"
+        if [ $((start_index + i)) -lt $current_package ]; then
+            echo "  Installing ${packages[start_index + i]}.."
+        else
+            echo ""
+        fi
+    done
+}
+# Manage the entire display
+display_installation() {
+    echo -en "\e[${CURSOR_MOVE}A"
+    display_header
+    display_actions
+}
+show_progress() {
+    while ps | grep $1 &>/dev/null; do
+        sleep 1
+    done
+}
+# Initialize the display
+display_installation
+for SOFTWR in ${packages[@]}; do
+    install_software $SOFTWR &>/dev/null
+    ((current_package++))
+    display_installation
+done
+sleep 1
+echo -e "Installation step completed ..."
+sleep 5
+# Display installation completion for each package with a random delay
+echo -e "\n==> Installation Summary: [packages]"
+for SOFTWR in ${packages[@]}; do
+    echo -e "  -> Installed $SOFTWR"
+    # Generate a random delay between 0 and 0.3 seconds
+    random_delay=$(awk -v min=0 -v max=0.3 'BEGIN{srand(); print min+rand()*(max-min)}')
+    sleep $random_delay
+done
+sleep 2
+#-- 設定のコピー -----------------------------------------
+
+# zshのdotfilesをコピー
+cp $HOME/dotfiles/zsh/.* $HOME/
+cp -R $HOME/dotfiles/config/* $HOME/.config/
+
+#-- サービスの有効化 -----------------------------------------
+echo "┌──────────────────────────────────────┐"
+echo "│   Bluetooth enabled ...              │"
+echo "└──────────────────────────────────────┘"
+echo -e "\n==> Starting Bluetooth..."
+echo -e "    -> Running bluez"
+echo -e "    -> Running bluez-utils"
+echo -e "    -> Running blueman"
+sudo systemctl enable --now bluetooth.service &>>$INSTLOG
+sleep 2
+#-- SDDMの設定 -----------------------------------------
+echo "┌──────────────────────────────────────┐"
+echo "│   SDDM enabled ...                   │"
+echo "└──────────────────────────────────────┘"
+echo "Enabling the SDDM Service..."
+sudo systemctl enable sddm &>>$INSTLOG
+sleep 2
+echo "Setting theme for sddm..."
+sudo mkdir -p /etc/sddm.conf.d
+sudo tee /etc/sddm.conf.d/theme.conf <<EOF
+[Theme]
+Current=corners
+EOF
+#-- GTKの設定 -----------------------------------------
+echo "┌──────────────────────────────────────┐"
+echo "│   Setting GTK and icon themes...     │"
+echo "└──────────────────────────────────────┘"
+echo "Setting GTK and icon themes..."
+gsettings set org.gnome.desktop.interface gtk-theme "Dracula"
+gsettings set org.gnome.desktop.interface icon-theme "Dracula"
+#-- インプットメソッドの設定 -----------------------------------------
+echo "┌──────────────────────────────────────┐"
+echo "│   Setting fcitx5 themes...           │"
+echo "└──────────────────────────────────────┘"
+echo "Setting fcitx5 theme..."
+# 1. プロジェクトをローカルにclone
+mkdir -p ~/.local/share/fcitx5/themes/dracula
+git clone https://github.com/drbbr/fcitx5-dracula-theme.git ~/.local/share/fcitx5/themes/dracula
+#-- テーマを有効化 -----------------------------------------
+# 2. 設定ファイルを修正
+CONFIG_PATH=~/.config/fcitx5/conf/classicui.conf
+# ファイルが存在しない場合、空のファイルを作成
+[ ! -f $CONFIG_PATH ] && touch $CONFIG_PATH
+# 設定の追加
+echo "Theme=dracula" >>$CONFIG_PATH
+# 注意：このスクリプトは設定を追加するだけです。既存の同名の設定がある場合、それを上書きはしません。
+# 設定を変更する場合は、手動で~/.config/fcitx5/conf/classicui.confを編集してください。
+echo "Setup is complete."
+fcitx5 -r
+#-- シェルの変更 -----------------------------------------
+echo "Changing default shell to Zsh..."
+if ! command -v zsh &>/dev/null; then
+    echo "Zsh is not installed. Please install Zsh first."
+    exit 1
+fi
+chsh -s $(which /bin/zsh)
+fast-theme zdharma
+
+#-- スプリクトに権限を与える -----------------------------------------
+echo -e "Setting some file as executable."
+sudo chmod +x ~/dotfiles/scripts/update.sh
+sudo chmod +x ~/.config/waybar/scripts/update-sys
+sudo chmod +x ~/.config/waybar/scripts/window.sh
+
+#-- 重要度の低いアクション -----------------------------------------
+sudo mkdir ~/スクリーンショット
+
+#-- スクリプトの完了 -----------------------------------------
+echo "┌──────────────────────────────────────┐"
+echo -e "│\e[97m  Start Hyprland? (y/n)               \e[0m│"
+echo "└──────────────────────────────────────┘"
+echo "Do you want to start Hyprland? (1) y (2) n"
+read -rep 'Choose: ' HYP
+if [[ $HYP == "1" ]]; then
+    exec sudo systemctl start sddm &>>$INSTLOG
+else
+    echo "Setup completed."
+    exit
+fi
