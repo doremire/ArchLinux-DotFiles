@@ -365,3 +365,4 @@ https://zenn.dev/doremire/scraps/7c36c04c15d43d
 - https://github.com/SolDoesTech/HyprV4
 - https://github.com/Subarupan/archdotfailid
 - https://github.com/Chick2D/neofetch-themes
+- https://github.com/HidemaruOwO/dotfiles
