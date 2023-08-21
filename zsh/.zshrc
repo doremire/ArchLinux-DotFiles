@@ -1,9 +1,6 @@
 # Created by newuser for 5.9
 eval "$(starship init zsh)"
 eval $(thefuck --alias)
-eval "$(zoxide init zsh)"
-
-# .zshrcの例
 
 # .zsh_aliasesファイルを読み込む
 if [ -f ~/.zsh_aliases ]; then
