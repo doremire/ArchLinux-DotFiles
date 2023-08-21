@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash
 INSTLOG="install.log"
 #-- パッケージ -----------------------------------------
 dm_packages=(
@@ -152,6 +152,35 @@ cat <<"EOF"
 
 
 
+Notes.
+    - Operation on non-Arch Linux is not guaranteed.
+    - Not supported on VMs
+    - NVIDIA GPUs are not supported
+
+
+If you must use it, please disable some of the code in this sprint and add your own additional packages.
+
+
+Japanese input environment is included in this setup. Are you Japanese?
+
+
+If you have any questions, problems, or suggestions, feel free to open an Issue and let us know. Your feedback is welcome! ♥
+
+
+TTY cannot display Japanese ↓
+        Arch は最高
+
+
+                               _       _         _   _               _               _       _  _
+                /\            | |     (_)       | | | |             | |             | |     | || |
+               /  \   _ __ ___| |__    _ ___    | |_| |__   ___     | |__   ___  ___| |_    | || |
+              / /\ \ | '__/ __| '_ \  | / __|   | __| '_ \ / _ \    | '_ \ / _ \/ __| __|   | || |
+             / ____ \| | | (__| | | | | \__ \   | |_| | | |  __/    | |_) |  __/\__ \ |_    |_||_|
+            /_/    \_\_|  \___|_| |_| |_|___/    \__|_| |_|\___|    |_.__/ \___||___/\__|   (_)(_)
+                                
+                                https://wiki.archlinux.org/title/arch_is_the_best
+
+
 EOF
 echo -e "\033[0m"
 echo "┌──────────────────────────────────────┐"
@@ -166,7 +195,7 @@ else
 fi
 #-- チェックステップ -----------------------------------------
 current_step=1
-total_steps=8 # Adjust this number based on the total number of checks you plan to perform
+total_steps=7 # Adjust this number based on the total number of checks you plan to perform
 perform_check() {
     local message="$1"
     local cmd="$2"
@@ -228,23 +257,28 @@ perform_check "Checking system language" \
     "[[ $LANG == ja_JP.* ]]" \
     "  - Check System language is set to Japanese" \
     "  - Error System language is not set to Japanese"
-false
 perform_check "Checking keyboard layout" \
     "[[ \$(localectl status | grep 'X11 Layout' | awk '{print \$3}') == 'jp' && \$(localectl status | grep 'X11 Model' | awk '{print \$3}') == 'jp106' ]]" \
     "  - Check Keyboard layout is set to Japanese (JP106)" \
     "  - Error Keyboard layout is not set to Japanese (JP106)"
-false
 
-git clone https://aur.archlinux.org/yay.git &>>$INSTLOG
-cd yay
-makepkg -si --noconfirm &>>../$INSTLOG &
-show_progress $!
-cd ..
-rm -rf yay
+# #-- AURのインストール -----------------------------------------
+echo "Please enter password required"
+sudo -v
+
+if [ ! -f /sbin/yay ]; then
+    echo -en "Configuering yay."
+    git clone https://aur.archlinux.org/yay.git &>>$INSTLOG
+    cd yay
+    makepkg -si --noconfirm &>>../$INSTLOG
+    cd ..
+    rm -rf yay
+fi
 
 sleep 2
 echo -e "[\e[32m   OK   \e[0m] All checks completed"
 echo -e "Installing main components. This may take a while...\n\n\n\n\n\n\n\n\n\n\n\n"
+
 #-- インストールステップ -----------------------------------------
 package_count=${#packages[@]}
 current_package=0
@@ -301,26 +335,56 @@ done
 sleep 2
 #-- 設定のコピー -----------------------------------------
 
-# zshのdotfilesをコピー
-cp $HOME/dotfiles/zsh/.* $HOME/
-cp -R $HOME/dotfiles/config/* $HOME/.config/
+# ランダムな秒数を生成する関数
+random_sleep() {
+    random_delay=$(awk -v min=0 -v max=3 'BEGIN{srand(); print min+rand()*(max-min)}')
+    sleep $random_delay
+}
+
+# シミュレートされた出力を表示する関数
+simulate_output() {
+    echo -e "$1"
+    random_sleep
+}
+
+#-- 設定のコピー -----------------------------------------
+echo "Copying zsh dotfiles..."
+for file in $HOME/dotfiles/zsh/.*; do
+    if [ "$(basename "$file")" != "." ] && [ "$(basename "$file")" != ".." ]; then
+        sudo cp -r "$file" $HOME/
+    fi
+done
+sudo cp -r $HOME/dotfiles/config/* $HOME/.config/
+simulate_output "[   \e[32mOK\e[0m   ] Copied zsh dotfiles to $HOME"
+simulate_output "[   \e[32mOK\e[0m   ] Copied config to $HOME/.config/"
+
+echo ""
+echo ""
 
 #-- サービスの有効化 -----------------------------------------
 echo "┌──────────────────────────────────────┐"
 echo "│   Bluetooth enabled ...              │"
 echo "└──────────────────────────────────────┘"
-echo -e "\n==> Starting Bluetooth..."
-echo -e "    -> Running bluez"
-echo -e "    -> Running bluez-utils"
-echo -e "    -> Running blueman"
+echo ""
 sudo systemctl enable --now bluetooth.service &>>$INSTLOG
+simulate_output "==> Starting Bluetooth..."
+simulate_output "    -> Running bluez"
+simulate_output "    -> Running bluez-utils"
+simulate_output "    -> Running blueman"
+simulate_output "[   \e[32mOK\e[0m   ] Started Bluetooth service"
 sleep 2
+
+echo ""
+echo ""
 #-- SDDMの設定 -----------------------------------------
 echo "┌──────────────────────────────────────┐"
 echo "│   SDDM enabled ...                   │"
 echo "└──────────────────────────────────────┘"
+echo ""
 echo "Enabling the SDDM Service..."
 sudo systemctl enable sddm &>>$INSTLOG
+simulate_output "Enabling the SDDM Service..."
+simulate_output "[   \e[32mOK\e[0m   ] Enabled SDDM Service"
 sleep 2
 echo "Setting theme for sddm..."
 sudo mkdir -p /etc/sddm.conf.d
@@ -328,21 +392,42 @@ sudo tee /etc/sddm.conf.d/theme.conf <<EOF
 [Theme]
 Current=corners
 EOF
+cp -f ~/dotfiles/extras/theme.conf /usr/share/sddm/themes/corners/
+simulate_output "Setting theme for sddm..."
+simulate_output "[   \e[32mOK\e[0m   ] SDDM theme set to 'corners'"
+
+echo ""
+echo ""
 #-- GTKの設定 -----------------------------------------
 echo "┌──────────────────────────────────────┐"
 echo "│   Setting GTK and icon themes...     │"
 echo "└──────────────────────────────────────┘"
-echo "Setting GTK and icon themes..."
+echo ""
+simulate_output "Setting GTK and icon themes..."
+simulate_output "[   \e[32mOK\e[0m   ] GTK theme set to 'Dracula'"
+simulate_output "[   \e[32mOK\e[0m   ] Icon theme set to 'Dracula'"
 gsettings set org.gnome.desktop.interface gtk-theme "Dracula"
 gsettings set org.gnome.desktop.interface icon-theme "Dracula"
+
+echo ""
+echo ""
 #-- インプットメソッドの設定 -----------------------------------------
 echo "┌──────────────────────────────────────┐"
 echo "│   Setting fcitx5 themes...           │"
 echo "└──────────────────────────────────────┘"
-echo "Setting fcitx5 theme..."
+echo ""
+simulate_output "Setting fcitx5 theme..."
+simulate_output "[   \e[32mOK\e[0m   ] fcitx5 theme set to 'dracula'"
 # 1. プロジェクトをローカルにclone
 mkdir -p ~/.local/share/fcitx5/themes/dracula
-git clone https://github.com/drbbr/fcitx5-dracula-theme.git ~/.local/share/fcitx5/themes/dracula
+if [[ ! -d ~/.local/share/fcitx5/themes/dracula ]]; then
+    git clone https://github.com/drbbr/fcitx5-dracula-theme.git ~/.local/share/fcitx5/themes/dracula
+else
+    echo "Error: ディレクトリは既に存在します。"
+fi
+
+echo ""
+echo ""
 #-- テーマを有効化 -----------------------------------------
 # 2. 設定ファイルを修正
 CONFIG_PATH=~/.config/fcitx5/conf/classicui.conf
@@ -352,33 +437,56 @@ CONFIG_PATH=~/.config/fcitx5/conf/classicui.conf
 echo "Theme=dracula" >>$CONFIG_PATH
 # 注意：このスクリプトは設定を追加するだけです。既存の同名の設定がある場合、それを上書きはしません。
 # 設定を変更する場合は、手動で~/.config/fcitx5/conf/classicui.confを編集してください。
-echo "Setup is complete."
-fcitx5 -r
+simulate_output "Modifying configuration for fcitx5..."
+simulate_output "[   \e[32mOK\e[0m   ] Theme set to 'dracula' in classicui.conf"
+
+echo ""
+echo ""
 #-- シェルの変更 -----------------------------------------
-echo "Changing default shell to Zsh..."
+simulate_output "Changing default shell to Zsh..."
+simulate_output "[   \e[32mOK\e[0m   ] Default shell set to Zsh"
 if ! command -v zsh &>/dev/null; then
     echo "Zsh is not installed. Please install Zsh first."
     exit 1
 fi
-chsh -s $(which /bin/zsh)
-fast-theme zdharma
+sudo chsh -s $(which /bin/zsh)
+fast-theme zdharma &>/dev/null
+
+echo ""
 
 #-- スプリクトに権限を与える -----------------------------------------
-echo -e "Setting some file as executable."
-sudo chmod +x ~/dotfiles/scripts/update.sh
+simulate_output "Setting some files as executable..."
+simulate_output "[   \e[32mOK\e[0m   ] Granted execute permissions to scripts"
+sudo chmod +x ~/dotfiles/scripts/update
 sudo chmod +x ~/.config/waybar/scripts/update-sys
 sudo chmod +x ~/.config/waybar/scripts/window.sh
 
+echo ""
+echo ""
 #-- 重要度の低いアクション -----------------------------------------
-sudo mkdir ~/スクリーンショット
+simulate_output "Creating ~/スクリーンショット directory..."
+simulate_output "[   \e[32mOK\e[0m   ] Directory created successfully"
+if [[ ! -d ~/スクリーンショット ]]; then
+    sudo mkdir ~/スクリーンショット
+else
+    echo "Error: ディレクトリは既に存在します。"
+fi
 
+echo ""
+echo ""
 #-- スクリプトの完了 -----------------------------------------
 echo "┌──────────────────────────────────────┐"
 echo -e "│\e[97m  Start Hyprland? (y/n)               \e[0m│"
 echo "└──────────────────────────────────────┘"
-echo "Do you want to start Hyprland? (1) y (2) n"
+echo ""
+echo "Setup is complete."
+
+echo "Do you want to start Hyprland?  y/N"
 read -rep 'Choose: ' HYP
-if [[ $HYP == "1" ]]; then
+if [[ $HYP == "y" ]]; then
+    simulate_output "Starting Hyprland..."
+    simulate_output "[   \e[32mOK\e[0m   ] Started Hyprland"
+    sleep 3
     exec sudo systemctl start sddm &>>$INSTLOG
 else
     echo "Setup completed."

@@ -85,9 +85,33 @@
 
 ```
 
+
+## My configurationmy
+
+|                            | Configuration                                                                         |
+|----------------------------|:-------------------------------------------------------------------------------------:|
+| **OS**                 | Arch Linux                                         |
+| **Color scheme**           | [dracula](https://github.com/dracula/dracula-theme)                  |
+| **Window manager**         | [Hyprland](https://github.com/hyprwm/Hyprland) (with LegacyRenderer)                  |
+| **Terminal**               | [wezterm](https://wezfurlong.org/wezterm/)                                            |
+| **Status bar**             | [Waybar](https://github.com/Alexays/Waybar)                                           |
+| **Text editor**            | [neovim](https://neovim.io/)                                                          |
+| **Browser**                | [Firefox](https://www.mozilla.org/et) with Japanese localization (`firefox-i18n-ja`)  |
+| **Fetching**               | [neofetch](https://github.com/dylanaraps/neofetch)                                    |
+| **Input method framework** | [Fcitx5](https://github.com/fcitx/fcitx5) with [Mozc](https://www.google.co.jp/ime/)  |
+| **File manager**           | [Thunar](https://xfce.org/about/news/?post=1525128000)                                |
+| **Application launcher**   | [Wofi (for Wayland)](https://hg.sr.ht/~scoopta/wofi)                                  |
+| **Notification daemon**    | [Mako (for Wayland)](https://github.com/emersion/mako)                                |
+| **Display manager**        | [sddm](https://github.com/sddm/sddm) with [sddm-theme-corners](https://github.com/aczw/sddm-theme-corners) |
+| **Logout menu**            | [wlogout (for Wayland)](https://github.com/ArtsyMacaw/wlogout)                         |
+| **Lock screen**            | [swaylock-effects](https://github.com/mortie/swaylock-effects)                         |
+| **Fonts**                  | [Noto CJK](https://www.google.com/get/noto/), [Font Awesome](https://fontawesome.com/), [ttf-nerd-fonts-symbols](https://www.nerdfonts.com/), [JetBrains Mono Nerd](https://www.jetbrains.com/lp/mono/), and others |
+| **Languages**              | ja_JP                                                          |
+
+
 ## 特徴
 
-  - 🚀 迅速なセットアップスプリクト
+  - 🚀 **迅速なセットアップスプリクト**
   
     └ 強力なセットアップスクリプトにより、複雑な操作なしで手軽に環境を構築できます。
 
@@ -96,14 +120,14 @@
     - ワンクリックセットアップ
     - ディスプレイマネージャーからZshの設定と幅広い自動設定
 
-  - 🪐 強力なカスタムスプリクト
+  - 🪐 **強力なカスタムスプリクト**
   
     └ 継続的な管理の為の強力なカスタムスプリクトが入っています。
   
     根拠
     - よりグラフィカルなアップデートスプリクトによる継続的なコミット 
 
-  - ⛺ 美しいデザイン
+  - ⛺ **美しいデザイン**
     
     └ より美学的なデスクトップ
 
@@ -111,7 +135,7 @@
     - 統一されたカラースキーム
     - オリジナルな壁紙
   
-  - 📦 幅広いツールをカバー
+  - 📦 **幅広いツールをカバー**
       
     └ 主要なツールやアプリケーションの設定が含まれており、一度のセットアップで幅広いニーズに対応できます。
 
@@ -119,7 +143,7 @@
     - 基本的な開発ツールやミーティングアプリケーションなどが入っており、正常に動作するように合わせた設定がされています。
     - Zshの基本的なプラグインが自動的にインストールされます。それに加えシンタックスハイライトプラグインなどのテーマが自動的に設定されるようにしています。
 
-  - 🌴 メンテナンス性
+  - 🌴 **メンテナンス性**
         
     └ 設定は見易く、コメントも充実しているので、カスタマイズや更新が容易です。
 
@@ -134,8 +158,7 @@
 
 多角的なアプローチによるより美学的なデスクトップ
 <div align="center">
-  <img src="assets/sswm01.png" alt="スクリーンショット1" width="700">
-  <img src="assets/sswm02.png" alt="スクリーンショット2" width="700">
+  <img src="assets/screenshot.png" alt="スクリーンショット1" width="700">
 </div>
 
 
@@ -152,17 +175,45 @@ TTYを完全サポートしたグラフィカルなセットアップスプリ�
 
 ```bash
 git clone https://github.com/doremire/dotfiles.git
-cd dotfiles
-sudo chmod +x setup.sh
+cd dotfiles/scripts
+sudo chmod +x setup
 ./setup.sh
 ```
 
 ### 壁紙について
-  <img src="assets/arch.gif" alt="スクリーンショット1" width="700">
+  <img src="assets/wallpaper.gif" alt="スクリーンショット1" width="700">
   
   壁紙は中央のイラストを除きスマホで制作...とは言えないので加工して作ったものです。
 
   元のイラスト: https://www.pixiv.net/artworks/109665466
+
+### FAQ
+
+<details>
+<summary>Q. なぜdotfilesの管理にシンボリックリンクを使わないのか？
+</summary>
+<br>
+A. シンボリックリンクはリアルタイムでの変更を反映できる利点がありますが、以下の点でディレクトリのコピー方式が優れています。<br>
+
+1. 新しいディレクトリの追加や変更の容易さ: シンボリックリンクを使用する場合、新しいディレクトリや設定ファイルの追加ごとにリンクの作成や更新が必要になります。これは管理の手間となる可能性があります。
+  
+2. 一貫性の確保: ディレクトリのコピー方式を採用すると、セットアップから継続的な管理までのプロセスに一貫性が生まれます。
+</details>
+<br>
+<details>
+<summary>Q. カスタムスクリプト(アップデートスクリクト)が存在する場合、どのような影響がありますか？
+</summary>
+<br>
+A.カスタムスクリプトが存在する場合、特にディレクトリのコピー方式との相性が良いです。なぜなら、新しいディレクトリや変更を簡単にホワイトリストに追加するだけで、アップデートスクリプトが自動で対象のディレクトリやファイルを取り扱ってくれるため、管理が非常に手軽になります。
+</details>
+<br>
+<details>
+<summary>Q. シンボリックリンク方式を選ばなかったのはカスタムスクリプトの存在だけですか？
+</summary>
+<br>
+A. カスタムスクリプトの存在は大きな要因の一つですが、新しいディレクトリの追加や変更の容易さ、そして一貫性の確保という点でも、ディレクトリのコピー方式が合理的だと考えました。
+</details>
+<br>
 
 ### パッケージリスト
 
