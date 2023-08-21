@@ -57,6 +57,9 @@ module_utils=(
     thunar-archive-plugin  # Thunarのアーカイブプラグイン
     pipewire
     wireplumber
+    chafa
+    zsh
+    thefcuk
 )
 core_apps=(
     hyprland        # WM
@@ -157,28 +160,8 @@ Notes.
     - Not supported on VMs
     - NVIDIA GPUs are not supported
 
-
-If you must use it, please disable some of the code in this sprint and add your own additional packages.
-
-
 Japanese input environment is included in this setup. Are you Japanese?
 
-
-If you have any questions, problems, or suggestions, feel free to open an Issue and let us know. Your feedback is welcome! ♥
-
-
-TTY cannot display Japanese ↓
-        Arch は最高
-
-
-                               _       _         _   _               _               _       _  _
-                /\            | |     (_)       | | | |             | |             | |     | || |
-               /  \   _ __ ___| |__    _ ___    | |_| |__   ___     | |__   ___  ___| |_    | || |
-              / /\ \ | '__/ __| '_ \  | / __|   | __| '_ \ / _ \    | '_ \ / _ \/ __| __|   | || |
-             / ____ \| | | (__| | | | | \__ \   | |_| | | |  __/    | |_) |  __/\__ \ |_    |_||_|
-            /_/    \_\_|  \___|_| |_| |_|___/    \__|_| |_|\___|    |_.__/ \___||___/\__|   (_)(_)
-                                
-                                https://wiki.archlinux.org/title/arch_is_the_best
 
 
 EOF
@@ -392,7 +375,7 @@ sudo tee /etc/sddm.conf.d/theme.conf <<EOF
 [Theme]
 Current=corners
 EOF
-cp -f ~/dotfiles/extras/theme.conf /usr/share/sddm/themes/corners/
+sudo cp -f ~/dotfiles/extras/theme.conf /usr/share/sddm/themes/corners/
 simulate_output "Setting theme for sddm..."
 simulate_output "[   \e[32mOK\e[0m   ] SDDM theme set to 'corners'"
 
@@ -417,9 +400,8 @@ echo "│   Setting fcitx5 themes...           │"
 echo "└──────────────────────────────────────┘"
 echo ""
 simulate_output "Setting fcitx5 theme..."
-simulate_output "[   \e[32mOK\e[0m   ] fcitx5 theme set to 'dracula'"
-# 1. プロジェクトをローカルにclone
-mkdir -p ~/.local/share/fcitx5/themes/dracula
+simulate_output "[   \e[32mOK\e[0m   ] fcitx5 theme set to 'dracula'" 
+
 if [[ ! -d ~/.local/share/fcitx5/themes/dracula ]]; then
     git clone https://github.com/drbbr/fcitx5-dracula-theme.git ~/.local/share/fcitx5/themes/dracula
 else
@@ -449,7 +431,7 @@ if ! command -v zsh &>/dev/null; then
     echo "Zsh is not installed. Please install Zsh first."
     exit 1
 fi
-sudo chsh -s $(which /bin/zsh)
+chsh -s /bin/zsh
 fast-theme zdharma &>/dev/null
 
 echo ""
