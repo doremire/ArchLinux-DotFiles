@@ -450,6 +450,7 @@ simulate_output "Creating ~/スクリーンショット directory..."
 simulate_output "[   \e[32mOK\e[0m   ] Directory created successfully"
 if [[ ! -d ~/スクリーンショット ]]; then
     sudo mkdir ~/スクリーンショット
+    sudo chown -R doremire スクリーンショット
 else
     echo "Error: ディレクトリは既に存在します。"
 fi
