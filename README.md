@@ -27,7 +27,7 @@
   ·
   <a href="https://github.com/doremire/ArchLinux-DotFiles/issues">[バグを報告]</a>
   ·
-  <a href="https://github.com/doremire/ArchLinux-DotFiles/issues">[新機能の提案]</a> -->
+  <a href="https://github.com/doremire/ArchLinux-DotFiles/issues">[新機能の提案]</a>
 </p>
 
 <br>
