@@ -9,11 +9,11 @@
 <h1 align="center">Dotfiles🌴</h1>
 
 <div align="center"><p>
-<img alt="Commit Activity" src="https://img.shields.io/github/commit-activity/m/doremire/dotfiles?style=for-the-badge&logo=instatus&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41" />
-<img alt="Last Commit" src="https://img.shields.io/github/last-commit/doremire/dotfiles?style=for-the-badge&logo=instatus&color=ee999f&logoColor=D9E0EE&labelColor=302D41" />
-<img src="https://img.shields.io/github/license/doremire/dotfiles?style=for-the-badge&logo=instatus&color=c69ff5&logoColor=D9E0EE&labelColor=302D41" alt="GitHub License"><br>
-<img src="https://img.shields.io/github/watchers/doremire/dotfiles?style=for-the-badge&logo=bilibili&color=F5E0DC&logoColor=D9E0EE&labelColor=302D41" alt="Codecov coverage">
-<img src="https://img.shields.io/github/repo-size/doremire/dotfiles?color=%23DDB6F2&label=SIZE&logo=instatus&style=for-the-badge&logoColor=D9E0EE&labelColor=302D41" alt="GitHub code size">
+<img alt="Commit Activity" src="https://img.shields.io/github/commit-activity/m/doremire/ArchLinux-DotFiles?style=for-the-badge&logo=instatus&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41" />
+<img alt="Last Commit" src="https://img.shields.io/github/last-commit/doremire/ArchLinux-DotFiles?style=for-the-badge&logo=instatus&color=ee999f&logoColor=D9E0EE&labelColor=302D41" />
+<img src="https://img.shields.io/github/license/doremire/ArchLinux-DotFiles?style=for-the-badge&logo=instatus&color=c69ff5&logoColor=D9E0EE&labelColor=302D41" alt="GitHub License"><br>
+<img src="https://img.shields.io/github/watchers/doremire/ArchLinux-DotFiles?style=for-the-badge&logo=bilibili&color=F5E0DC&logoColor=D9E0EE&labelColor=302D41" alt="Codecov coverage">
+<img src="https://img.shields.io/github/repo-size/doremire/ArchLinux-DotFiles?color=%23DDB6F2&label=SIZE&logo=instatus&style=for-the-badge&logoColor=D9E0EE&labelColor=302D41" alt="GitHub code size">
 </div>
 
 <p align="center">
@@ -22,12 +22,12 @@
   個人的とは言え、誰でも気軽にセットアップできるようになっています。<br>
   既存の構成に導入するのは推奨しません。
  
-  <!-- <br>
-  <a href="https://github.com/your-username/your-repo/wiki">[ドキュメント]</a>
+  <br>
+  <a href="https://github.com/doremire/ArchLinux-DotFiles/wiki">[ドキュメント]</a>
   ·
-  <a href="https://github.com/your-username/your-repo/issues">[バグを報告]</a>
+  <a href="https://github.com/doremire/ArchLinux-DotFiles/issues">[バグを報告]</a>
   ·
-  <a href="https://github.com/your-username/your-repo/issues">[新機能の提案]</a> -->
+  <a href="https://github.com/doremire/ArchLinux-DotFiles/issues">[新機能の提案]</a> -->
 </p>
 
 <br>
