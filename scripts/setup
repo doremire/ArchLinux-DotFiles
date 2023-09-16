@@ -442,6 +442,7 @@ simulate_output "[   \e[32mOK\e[0m   ] Granted execute permissions to scripts"
 sudo chmod +x ~/dotfiles/scripts/update
 sudo chmod +x ~/.config/waybar/scripts/update-sys
 sudo chmod +x ~/.config/waybar/scripts/window.sh
+sudo chmod +w ~/スクリーンショット
 
 echo ""
 echo ""
