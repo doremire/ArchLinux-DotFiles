@@ -2,27 +2,27 @@ local wezterm = require("wezterm")
 
 return {
 
--- default_prog = {"neofetch"},
+    -- default_prog = {"neofetch"},
     -- timeout_milliseconds defaults to 1000 and can be omitted
     leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 },
     keys = {
         {
-        key = '|',
-        mods = 'LEADER|SHIFT',
-        action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+            key = '|',
+            mods = 'LEADER|SHIFT',
+            action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
         },
         -- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
         {
-        key = '-',
-        mods = 'LEADER|CTRL',
-        action = wezterm.action.SendString '\x01',
+            key = '-',
+            mods = 'LEADER|CTRL',
+            action = wezterm.action.SendString '\x01',
         },
     },
     -- sound
     audible_bell = "Disabled",
     -- font
     font_size = 12.0,
-    font = wezterm.font_with_fallback{
+    font = wezterm.font_with_fallback {
         {
             family = "JetBrainsMono Nerd Font"
         },
@@ -54,4 +54,9 @@ return {
     -- inactive_pane_hsb = {saturation = 1.0, brightness = 1.0},
     window_background_opacity = 0.5,
     -- window_close_confirmation = "NeverPrompt"
+
+    default_cursor_style = 'BlinkingBlock',
+    cursor_blink_rate = 400,
+    force_reverse_video_cursor = true
+
 }
