@@ -24,7 +24,7 @@ return {
     font_size = 12.0,
     font = wezterm.font_with_fallback {
         {
-            family = "JetBrainsMono Nerd Font"
+            family = "JetBrains Mono"
         },
         {
             family = "Symbols Nerd Font"
