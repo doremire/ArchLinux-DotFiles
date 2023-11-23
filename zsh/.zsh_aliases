@@ -20,6 +20,7 @@ alias_arr=(
     :so='echo "vimじゃないけどソースを読み込みます" && source'
     so='source'
 
+    ipa='ip -br -c a'
 
 )
 
